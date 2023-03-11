@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tap the Circle</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      #game-container {
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+      }
+      #circle {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        animation: circle-animation 2s infinite alternate;
+      }
+      @keyframes circle-animation {
+        0% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(1.2);
+        }
+      }
+      .score {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .button:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-container">
+      <div class="score">Score: <span id="score">0</span></div>
+      <div id="circle"></div>
+      <div id="timer">Time left: <span id="time-left">10</span></div>
+      <button class="button" id="start-button">Start Game</button>
+    </div>
+    <script>
+      var score = 0;
+      var circle = document.getElementById("circle");
+      var timeLeft = 10;
+      var timerElement = document.getElementById("time-left");
+      var startButton = document.getElementById("start-button");
+
+      function startGame() {
+        startButton.style.display = "none";
+        var gameTimer = setInterval(function() {
+          timeLeft--;
+          timerElement.innerHTML = timeLeft;
+          if (timeLeft === 0) {
+            clearInterval(gameTimer);
+            circle.removeEventListener("click", incrementScore);
+            alert("Game over! Your score is " + score);
+            location.reload();
+          }
+        }, 1000);
+        circle.addEventListener("click", incrementScore);
+      }
+
+      function incrementScore() {
+        score++;
+        document.getElementById("score").innerHTML = score;
+        circle.style.top = Math.floor(Math.random() * 400) + "px";
+        circle.style.left = Math.floor(Math.random() * 400) + "px";
+      }
+
+      startButton.addEventListener("click", startGame);
+    </script>
+  </body>
+</html>
